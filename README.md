@@ -2,6 +2,12 @@
 
 A mobile application built with Expo (React Native) that allows users to view their account balance, transfer money, and view transaction history.
 
+## Links
+
+- **Source Code (GitHub):** https://github.com/samuellaemoiwo-cmd/SimpleBankApp.git
+- **Website URL (web preview):** simplebanka.netlify.app 
+
+
 ## Features
 - View current account balance
 - Transfer money to a recipient (with input validation)
