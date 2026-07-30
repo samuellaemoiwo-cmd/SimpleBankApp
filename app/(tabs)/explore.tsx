@@ -1,27 +1,35 @@
-import { useState } from 'react';
-import { StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { useBank } from '@/context/BankContext';
+import { useState } from 'react';
+import { Alert, Platform, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 
 export default function TransferScreen() {
   const { balance, addTransaction } = useBank();
   const [recipient, setRecipient] = useState('');
   const [amount, setAmount] = useState('');
 
+  const showAlert = (title: string, message: string) => {
+    if (Platform.OS === 'web') {
+      window.alert(`${title}\n\n${message}`);
+    } else {
+      Alert.alert(title, message);
+    }
+  };
+
   const handleTransfer = () => {
     const numericAmount = parseFloat(amount);
 
     if (!recipient.trim()) {
-      Alert.alert('Missing recipient', 'Please enter who you are sending money to.');
+      showAlert('Missing recipient', 'Please enter who you are sending money to.');
       return;
     }
     if (isNaN(numericAmount) || numericAmount <= 0) {
-      Alert.alert('Invalid amount', 'Please enter a valid amount greater than 0.');
+      showAlert('Invalid amount', 'Please enter a valid amount greater than 0.');
       return;
     }
     if (numericAmount > balance) {
-      Alert.alert('Insufficient funds', 'You do not have enough balance for this transfer.');
+      showAlert('Insufficient funds', 'You do not have enough balance for this transfer.');
       return;
     }
 
@@ -33,7 +41,7 @@ export default function TransferScreen() {
       date: new Date().toISOString().split('T')[0],
     });
 
-    Alert.alert('Success', `Le ${numericAmount.toFixed(2)} sent to ${recipient.trim()}`);
+    showAlert('Success', `Le ${numericAmount.toFixed(2)} sent to ${recipient.trim()}`);
     setRecipient('');
     setAmount('');
   };
